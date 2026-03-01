@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Milk Supplier Tool Of Abdul Saeed</title>
+    
+    <!-- Professional Web App Meta Tags -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#FFD400">
+    <meta name="mobile-web-app-capable" content="yes">
+
+    <!-- Professional App Icon (HD SVG) -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='120' fill='%23FFD400'/%3E%3Cpath d='M256 120c-40 0-70 30-70 70v150c0 40 30 70 70 70s70-30 70-70V190c0-40-30-70-70-70zm30 220c0 16-14 30-30 30s-30-14-30-30V190c0-16 14-30 30-30s30 14 30 30v150z' fill='%23000'/%3E%3Ctext x='50%25' y='85%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial, sans-serif' font-weight='900' font-size='80' fill='%23000'%3EAS STORE%3C/text%3E%3C/svg%3E">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='120' fill='%23FFD400'/%3E%3Cpath d='M256 120c-40 0-70 30-70 70v150c0 40 30 70 70 70s70-30 70-70V190c0-40-30-70-70-70zm30 220c0 16-14 30-30 30s-30-14-30-30V190c0-16 14-30 30-30s30 14 30 30v150z' fill='%23000'/%3E%3Ctext x='50%25' y='85%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial, sans-serif' font-weight='900' font-size='80' fill='%23000'%3EAS STORE%3C/text%3E%3C/svg%3E">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@1,900&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --brand-yellow: #FFD400;
+            --brand-black: #0F172A;
+            --bg-gray: #F8FAFC;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-gray);
+            color: var(--brand-black);
+            overflow-x: hidden;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .app-header {
+            background: var(--brand-yellow);
+            border-bottom-left-radius: 2.5rem;
+            border-bottom-right-radius: 2.5rem;
+            box-shadow: 0 15px 35px -12px rgba(255, 212, 0, 0.6);
+        }
+
+        .avatar {
+            width: 65px;
+            height: 65px;
+            background: white;
+            border: 3.5px solid var(--brand-black);
+            border-radius: 1.4rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Playfair Display', serif;
+            font-size: 26px;
+            font-weight: 900;
+            font-style: italic;
+        }
+
+        .item-card {
+            background: white;
+            border-radius: 1.5rem;
+            padding: 1rem;
+            margin-bottom: 0.85rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            border: 1px solid #F1F5F9;
+            box-shadow: 0 4px 12px -2px rgba(0,0,0,0.03);
+            transition: all 0.2s ease;
+        }
+
+        .input-pill {
+            background: #F1F5F9;
+            border: 2px solid transparent;
+            border-radius: 0.75rem;
+            width: 100%;
+            padding: 0.5rem;
+            text-align: center;
+            font-weight: 800;
+            font-size: 0.85rem;
+            color: var(--brand-black);
+        }
+        .input-pill:focus {
+            outline: none;
+            border-color: var(--brand-yellow);
+            background: white;
+        }
+
+        #voiceBtn {
+            position: fixed;
+            bottom: 35px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 80px;
+            background: var(--brand-black);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--brand-yellow);
+            box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.5);
+            z-index: 100;
+            border: 5px solid white;
+            transition: all 0.3s ease;
+        }
+
+        .listening-pulse {
+            animation: app-pulse 1.5s infinite;
+        }
+        @keyframes app-pulse {
+            0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+            70% { box-shadow: 0 0 0 20px rgba(239, 68, 68, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+        }
+
+        .whatsapp-preview-card {
+            background: #f0fff0;
+            border: 1.5px dashed #25D366;
+            border-radius: 1.8rem;
+            position: relative;
+            padding: 1.5rem;
+        }
+
+        .total-bill-badge {
+            background: var(--brand-black);
+            color: var(--brand-yellow);
+            padding: 1rem;
+            border-radius: 1.25rem;
+            text-align: center;
+            font-weight: 900;
+            font-size: 1.25rem;
+            margin-top: 1rem;
+            box-shadow: 0 10px 20px -5px rgba(0,0,0,0.2);
+        }
+
+        ::-webkit-scrollbar { display: none; }
+    </style>
+</head>
+<body class="pb-44">
+
+    <!-- App Header -->
+    <header class="app-header px-7 pt-12 pb-10 text-black">
+        <div class="flex items-center gap-5 mb-8">
+            <div class="avatar">AS</div>
+            <div>
+                <h1 class="text-2xl font-black leading-tight">Abdul Saeed Store</h1>
+                <p class="text-[10px] font-extrabold opacity-60 uppercase tracking-[0.2em]">Milk Supply Management</p>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4">
+            <div class="bg-white/40 backdrop-blur-lg p-3 rounded-2xl border border-white/30 shadow-sm">
+                <label class="text-[9px] font-black uppercase opacity-50 mb-1 block">Order Shift</label>
+                <select id="orderShift" class="bg-transparent w-full font-extrabold text-sm outline-none" onchange="updatePreview()">
+                    <option value="🌙 EVENING" selected>🌙 EVENING</option>
+                    <option value="☀️ MORNING">☀️ MORNING</option>
+                </select>
+            </div>
+            <div class="bg-white/40 backdrop-blur-lg p-3 rounded-2xl border border-white/30 shadow-sm">
+                <label class="text-[9px] font-black uppercase opacity-50 mb-1 block">Selected Date</label>
+                <input type="date" id="orderDate" class="bg-transparent w-full font-extrabold text-sm outline-none" onchange="updatePreview()">
+            </div>
+        </div>
+    </header>
+
+    <main class="px-6 mt-[-25px]">
+        <div class="bg-white rounded-3xl p-5 shadow-xl border border-slate-100 flex justify-between items-center mb-6">
+            <div class="flex flex-col">
+                <span class="text-[10px] font-black text-slate-400 uppercase">Status</span>
+                <span id="systemStatus" class="text-xs font-extrabold text-green-600 flex items-center gap-1.5">
+                    <span class="w-2 h-2 bg-green-500 rounded-full"></span> SYSTEM READY
+                </span>
+            </div>
+            <div class="h-10 w-px bg-slate-100"></div>
+            <div class="flex flex-col text-right">
+                <span class="text-[10px] font-black text-slate-400 uppercase">Supplier</span>
+                <span class="text-xs font-extrabold italic">Abdul Wahaj</span>
+            </div>
+        </div>
+
+        <div id="inventoryContainer" class="space-y-4">
+            <!-- Items via JS -->
+        </div>
+
+        <div class="total-bill-badge">
+            <span class="text-[10px] uppercase block opacity-70 tracking-widest mb-1">Grand Total Bill</span>
+            ₹ <span id="grandTotalDisplay">0.00</span>
+        </div>
+
+        <div class="mt-12 mb-10 text-center">
+            <p id="voiceStatus" class="text-[10px] font-bold text-slate-400 uppercase italic mb-4">Tap mic to start voice order</p>
+            
+            <div class="whatsapp-preview-card shadow-inner mb-8">
+                <pre id="textPreview" class="whitespace-pre-wrap font-sans text-[13px] font-semibold text-slate-700 leading-relaxed text-left"></pre>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3">
+                <button onclick="sendToWhatsApp()" class="bg-[#25D366] text-white font-black py-4 rounded-2xl flex flex-col items-center justify-center gap-1 active:scale-95 transition-all shadow-xl">
+                    <span class="text-sm uppercase tracking-widest">Send Order</span>
+                </button>
+                <button onclick="copyToClipboard()" class="bg-slate-900 text-white font-black py-4 rounded-2xl flex flex-col items-center justify-center gap-1 active:scale-95 transition-all shadow-xl">
+                    <span class="text-sm uppercase tracking-widest">Copy Bill</span>
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <button id="voiceBtn" onclick="toggleVoice()">
+        <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" x2="12" y1="19" y2="22"/></svg>
+    </button>
+
+    <div id="toast" class="hidden fixed top-8 left-1/2 -translate-x-1/2 bg-slate-900 text-white px-8 py-4 rounded-2xl font-black text-xs shadow-2xl z-[500] border border-white/10">
+        ✓ ACTION COMPLETED
+    </div>
+
+    <script>
+        const apiKey = ""; 
+        const items = [
+            "FCM 2LT", "FCM 1LTR", "FCM 500", "FCM 300",
+            "TM 500", "TM 90", "TM 170",
+            "BM 300", "BM 145",
+            "DH 135", "DH 80", "DH 180", "2ltr Dahi", "DH 290", "DH ;LTR",
+            "ROSE 150", "LTR DAHI S"
+        ];
+
+        const itemPrices = {
+            "FCM 2LT": 133.54, 
+            "FCM 1LTR": 66.77,
+            "FCM 500": 34.78,
+            "FCM 300": 18,
+            "TM 500": 27,
+            "TM 90": 10,
+            "TM 170": 9,
+            "BM 300": 9.32,
+            "BM 145": 4.4,
+            "DH 135": 9.5,
+            "DH 80": 9,
+            "DH 180": 17.85,
+            "2ltr Dahi": 145.6, 
+            "DH 290": 31.85,
+            "DH ;LTR": 72.8,
+            "ROSE 150": 20,
+            "LTR DAHI S": 100
+        };
+
+        const nicknames = {
+            "Gold 20 wala": "FCM 300", "Gold Bees wala": "FCM 300",
+            "Gold Aadha Litre": "FCM 500", "Gold Adha": "FCM 500",
+            "Gold 1 Litre": "FCM 1LTR", "Gold Ek Litre": "FCM 1LTR", "1 Kosh": "FCM 1LTR",
+            "Gold 2 Litre": "FCM 2LT", "Gold Do Litre": "FCM 2LT",
+            "Taaza 500": "TM 500", "Taaza Panso": "TM 500", "Taaza": "TM 500",
+            "Motu": "TM 170", "Mota": "TM 170",
+            "Dahi 10 wala": "DH 135", "Dahi Packet 10 wala": "DH 135",
+            "Dahi 400": "DH 290", "Dahi Char Sau": "DH 290", "Dahi 400gm": "DH 290",
+            "Dahi Litre": "DH ;LTR",
+            "Dahi Bada": "DH 180", "Katori Badi": "DH 180",
+            "Dahi Chota": "DH 80", "Katori Choti": "DH 80", "Dahi Katori": "DH 80",
+            "Saada Mattha": "BM 300", "Masala Mattha": "BM 145"
+        };
+
+        let isListening = false;
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        let recognition = null;
+        
+        if (SpeechRecognition) {
+            recognition = new SpeechRecognition();
+            recognition.continuous = false;
+            recognition.lang = 'hi-IN';
+            recognition.onresult = (e) => processVoiceOrder(e.results[0][0].transcript);
+            recognition.onend = () => setVoiceUI(false);
+            recognition.onerror = (e) => {
+                setVoiceUI(false);
+                if(e.error === 'not-allowed') {
+                    showCustomAlert("Mic Permission Denied. Please allow mic in settings.");
+                } else if(window.location.protocol === 'file:') {
+                    showCustomAlert("Mic only works on HTTPS links. Please host it on Netlify.");
+                } else {
+                    showCustomAlert("Mic Error: " + e.error);
+                }
+            };
+        }
+
+        function toggleVoice() {
+            if (!recognition) return showCustomAlert("Mic not supported in this browser.");
+            
+            // Check for file protocol (Local files)
+            if (window.location.protocol === 'file:') {
+                showCustomAlert("Mic disabled for local files. Please host on Netlify (HTTPS) to enable Voice.");
+                return;
+            }
+
+            if (isListening) { 
+                recognition.stop(); 
+            } else { 
+                try {
+                    recognition.start(); 
+                    setVoiceUI(true); 
+                } catch(e) {
+                    showCustomAlert("Could not start Mic. Please refresh.");
+                }
+            }
+        }
+
+        function setVoiceUI(active) {
+            isListening = active;
+            const btn = document.getElementById('voiceBtn');
+            const status = document.getElementById('voiceStatus');
+            if (active) {
+                btn.style.background = "#EF4444";
+                btn.classList.add('listening-pulse');
+                status.innerText = "Listening... बोलिए";
+            } else {
+                btn.style.background = "#0F172A";
+                btn.classList.remove('listening-pulse');
+                status.innerText = "Tap mic to speak order";
+            }
+        }
+
+        function showCustomAlert(msg) {
+            const status = document.getElementById('voiceStatus');
+            status.innerText = msg;
+            status.classList.add('text-red-500');
+            setTimeout(() => {
+                status.classList.remove('text-red-500');
+                status.innerText = "Tap mic to speak order";
+            }, 5000);
+        }
+
+        async function processVoiceOrder(transcript) {
+            const status = document.getElementById('voiceStatus');
+            status.innerHTML = `Heard: "<span class="text-black font-bold">${transcript}</span>"`;
+            
+            const prompt = `Analyze Hinglish milk supply order.
+            Mappings: ${JSON.stringify(nicknames)}.
+            Full SKU List: ${JSON.stringify(items)}.
+            Unit Conversions: Gold Adha=26, Taaza=26, Mota=60, Dahi 10=70, Dahi 400=30, Bada Dahi Dibba=6.
+            Return JSON: { "results": [{ "name": "SKU", "qty": calculated_total_pcs, "crates": peti_count }] }`;
+
+            try {
+                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ contents: [{ parts: [{ text: transcript }] }], systemInstruction: { parts: [{ text: prompt }] }, generationConfig: { responseMimeType: "application/json" } })
+                });
+                const data = await response.json();
+                const json = JSON.parse(data.candidates[0].content.parts[0].text);
+                if (json.results) {
+                    json.results.forEach(res => {
+                        const card = Array.from(document.querySelectorAll('.item-card')).find(c => c.dataset.name === res.name);
+                        if (card) {
+                            if (res.qty !== undefined) card.querySelector('.qty-input').value = res.qty;
+                            if (res.crates !== undefined) card.querySelector('.crate-input').value = res.crates;
+                            card.classList.add('border-yellow-400', 'bg-yellow-50');
+                            setTimeout(() => card.classList.remove('border-yellow-400', 'bg-yellow-50'), 2000);
+                        }
+                    });
+                    updatePreview();
+                }
+            } catch (err) { status.innerText = "Voice Error. Try again."; }
+        }
+
+        function initApp() {
+            document.getElementById('orderDate').value = new Date().toISOString().split('T')[0];
+            document.getElementById('orderShift').value = "🌙 EVENING";
+            const container = document.getElementById('inventoryContainer');
+            items.forEach((name, i) => {
+                const price = itemPrices[name] || 0;
+                const div = document.createElement('div');
+                div.className = 'item-card';
+                div.dataset.name = name;
+                div.dataset.price = price;
+                div.innerHTML = `
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h3 class="font-extrabold text-[15px] text-slate-800">${name}</h3>
+                            <p class="text-[8px] font-bold text-slate-400 uppercase tracking-widest">Rate: ₹${price}/pc</p>
+                        </div>
+                        <div class="text-right">
+                            <span class="text-[8px] font-black uppercase text-slate-400 block mb-0.5">Amount</span>
+                            <span class="row-amount font-black text-sm text-slate-900">₹0.00</span>
+                        </div>
+                    </div>
+                    <div class="flex gap-2">
+                        <div class="flex-1">
+                            <span class="text-[7px] font-black uppercase text-slate-400 block text-center mb-0.5">Pcs</span>
+                            <input type="number" step="any" placeholder="0" class="qty-input input-pill" oninput="updatePreview()">
+                        </div>
+                        <div class="flex-1">
+                            <span class="text-[7px] font-black uppercase text-blue-400 block text-center mb-0.5">Peti</span>
+                            <input type="number" step="any" placeholder="0" class="crate-input input-pill text-blue-600" oninput="updatePreview()">
+                        </div>
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+            updatePreview();
+        }
+
+        function generateMessage() {
+            const cards = document.querySelectorAll('.item-card');
+            const dateStr = document.getElementById('orderDate').value;
+            const date = dateStr ? new Date(dateStr).toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }) : "";
+            const shift = document.getElementById('orderShift').value;
+            let itemLines = "";
+            let grandTotal = 0;
+            let hasData = false;
+
+            cards.forEach((card) => {
+                const name = card.dataset.name;
+                const price = parseFloat(card.dataset.price);
+                const qty = parseFloat(card.querySelector('.qty-input').value) || 0;
+                const crates = parseFloat(card.querySelector('.crate-input').value) || 0;
+                
+                if (qty > 0 || crates > 0) {
+                    hasData = true;
+                    const rowTotal = Math.round((qty * price) * 100) / 100;
+                    grandTotal += rowTotal;
+                    card.querySelector('.row-amount').innerText = `₹${rowTotal.toFixed(2)}`;
+
+                    let parts = [];
+                    if (qty > 0) parts.push(`Qty: *${qty}*`);
+                    if (crates > 0) parts.push(`Crates: *${crates}*`);
+                    itemLines += `🥛 *${name}*\n      ╰─▶ ${parts.join(' | ')}\n\n`;
+                } else {
+                    card.querySelector('.row-amount').innerText = `₹0.00`;
+                }
+            });
+
+            document.getElementById('grandTotalDisplay').innerText = grandTotal.toLocaleString('en-IN', { minimumFractionDigits: 2 });
+
+            return `------------------------------------------
+🥛 *ABDUL SAEED GENERAL STORE*
+📍 88/265 Chaman Ganj Kanpur
+📞 *9616402239*
+------------------------------------------
+👤 *Supplier: Abdul Wahaj*
+🏷️ *Brand: Namaste India*
+------------------------------------------
+📦 *MILK SUPPLY ORDER & BILL*
+📅 *Date: ${date}*
+🕒 *Shift: ${shift}*
+------------------------------------------
+
+${hasData ? itemLines : "_[NO DATA ENTERED]_\n"}
+------------------------------------------
+💰 *GRAND TOTAL BILL: ₹${grandTotal.toLocaleString('en-IN', { minimumFractionDigits: 2 })}*
+------------------------------------------
+🙏 *Fulfillment requested ASAP.*
+
+📝 *NOTE:*
+Want Same Supply As Mentioned And If Any Quantity Is Less Or Extra First Confirm Otherwise The Payment would be given as per this supply which is given.
+------------------------------------------`;
+        }
+
+        function updatePreview() {
+            const msg = generateMessage();
+            document.getElementById('textPreview').innerHTML = msg.replace(/\*(.*?)\*/g, '<b class="text-black">$1</b>').replace(/_(.*?)_/g, '<em>$1</em>');
+        }
+
+        function sendToWhatsApp() {
+            const text = generateMessage();
+            window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
+        }
+
+        function copyToClipboard() {
+            const text = generateMessage();
+            const el = document.createElement('textarea');
+            el.value = text;
+            document.body.appendChild(el); el.select();
+            document.execCommand('copy'); document.body.removeChild(el);
+            showToast("BILL COPIED");
+        }
+
+        function showToast(text) {
+            const t = document.getElementById('toast');
+            t.innerText = "✓ " + text;
+            t.classList.remove('hidden');
+            setTimeout(() => t.classList.add('hidden'), 2500);
+        }
+
+        window.onload = initApp;
+    </script>
+</body>
+</html>
